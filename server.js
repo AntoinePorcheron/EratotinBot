@@ -135,10 +135,9 @@ bot.dialog('/quizz-add', [
 ]);
 
 bot.dialog('/quizz-start', function(session){
-    
+    session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
+    //this is here that the magic work for the quizz
 });
-
-
 
 bot.dialog('/quizz-question', [
     function(session){
@@ -147,8 +146,8 @@ bot.dialog('/quizz-question', [
     },
 
     function(session, result){
+        console.log(session);
         if (result.response === CURRENT_QUESTION.anwser){
-            //process result
             session.send("Bravo! la réponse était : ")
             session.send(CURRENT_QUESTION.anwser);
             session.endDialog();
