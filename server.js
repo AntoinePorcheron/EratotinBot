@@ -86,9 +86,9 @@ server.post('/api/messages', connector.listen());
 
 
 bot.dialog('/', function (session) {
-
+    console.log(session);
     if (matchListWord(session.text, SWEAR_WORD) > 0){
         session.send(any(SWEAR_RESPONSES));
     }
-    console.log(session);
+
 });
