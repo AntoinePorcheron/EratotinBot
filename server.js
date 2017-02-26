@@ -147,6 +147,7 @@ bot.dialog('/quizz-question', [
 
     function(session, result){
         console.log(session);
+        console.log(CURRENT_QUESTION);
         if (result.response === CURRENT_QUESTION.anwser){
             session.send("Bravo! la réponse était : ")
             session.send(CURRENT_QUESTION.anwser);
