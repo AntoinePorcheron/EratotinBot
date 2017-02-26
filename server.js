@@ -90,6 +90,5 @@ bot.dialog('/', function (session) {
     if (matchListWord(session.text, SWEAR_WORD) > 0){
         session.send(any(SWEAR_RESPONSES));
     }
-    /*console.log(session);
-    session.send("Hello World");*/
+    console.log(session);
 });
