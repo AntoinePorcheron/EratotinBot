@@ -110,6 +110,7 @@ function matchListWord(w, l){
 
 function any(array){
     var pos = rand(0, array.length - 1);
+    console.log(pos);
     return array[pos];
 }
 
