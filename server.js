@@ -6,7 +6,7 @@ var server = restify.createServer();
 
 /*console.log(process.env.PORT)
 console.log(*/
-server.listen(/*process.env.port || process.env.PORT || 3978*/80, function () {
+server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
   
