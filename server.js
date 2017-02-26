@@ -1,6 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 
+var ASK_QUIZZ = "Ecrivez la question, suivi de la réponse, séparé par un point virgule. Example : question;réponse";
+
 var SWEAR_WORD = [
     "connard",
     "fils de pute",
@@ -100,19 +102,39 @@ bot.dialog('/', function (session) {
     
     var input = parseText(session.message.text);
 
-    console.log(input);
-    
     if (matchListWord(input, SWEAR_WORD) > -1){
         session.send(any(SWEAR_RESPONSES));
     }else if (input.startsWith("quizz add")){
-        var text = input.substr("quizz add".length, input.length);
+        session.beginDialog("/quizz-add");
+        /*var text = input.substr("quizz add".length, input.length);
         var q_and_a = text.split(";");
         QUIZZY.push(new Quizz(q_and_a[0], q_and_a[1]));
-        session.send("The question is now added to the Quizz!");
+        session.send("The question is now added to the Quizz!");*/
     }else if (input === "show quizz"){
         for (var i = 0; i < QUIZZY.length; ++i){
             session.send(QUIZZY[i].question);
         }
-    }else if (input === "salut" 
+    }
 
 });
+
+bot.dialog('/swear', function(session){
+
+});
+
+bot.dialog('/quizz-add', [
+    function(session){
+        session.Prompts.text(session, ASK_QUIZZ);
+    },
+    function(session, resulst){
+        var tmp = result.response.split(";");
+        QUIZZY.push(new Quizz(tmp[0], tmp[1]));
+        session.send("Merci de votre participation!");
+        session.endDialog();
+    }
+
+
+
+]);
+
+bot.dialog('/quizz-start', []);
