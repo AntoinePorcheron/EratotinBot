@@ -179,26 +179,22 @@ bot.dialog('/quizz-start', function(session){
         session.beginDialog("/quizz-question");
     }
     session.endDialog();
-    //this is here that the magic work for the quizz
 });
 
 bot.dialog('/quizz-question', [
     function(session){
         builder.Prompts.text(session, CURRENT_QUESTION.question);
     },
-
     function(session, result){
-        parseText
         if (parseText(result.response) === CURRENT_QUESTION.anwser){
             session.send("Bravo! la réponse était : ")
             session.send(CURRENT_QUESTION.anwser);
-            session.endDialog();
+            session.endDialog(); 
         }
     }
 ]);
 
 bot.dialog('/global', function(session){
     session.send(any(RANDOM_PHRASE));
-    session.endDialog();
-                 
+    session.endDialog();              
 });
