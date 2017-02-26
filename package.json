@@ -1,0 +1,15 @@
+{
+  "name": "eratotin-bot",
+  "version": "1.0.0",
+  "description": "test de bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://eratotin@eratotin-bot.scm.azurewebsites.net:443/eratotin-bot.git"
+  },
+  "author": "eratotin",
+  "license": "ISC"
+}
