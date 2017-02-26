@@ -87,7 +87,7 @@ server.post('/api/messages', connector.listen());
 
 bot.dialog('/', function (session) {
     console.log(session.message.text);
-    if (matchListWord(session.message.text, SWEAR_WORD) > 0){
+    if (matchListWord(session.message.text, SWEAR_WORD) > -1){
         session.send(any(SWEAR_RESPONSES));
     }
 
