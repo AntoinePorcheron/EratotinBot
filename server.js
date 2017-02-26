@@ -29,6 +29,15 @@ var SWEAR_RESPONSES = [
     "s'pèce de putain"
 ]
 
+function parseText(text){
+    var reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
+    var replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
+    if ( reg.test(text)){
+        text = text.replace(replace_reg, "");
+    }
+    return text.trim();
+}
+
 function rand(a, b){
     return Math.round((Math.random() + a) * (b - a));
 }
@@ -86,15 +95,19 @@ server.post('/api/messages', connector.listen());
 
 
 bot.dialog('/', function (session) {
-    console.log(session);
-    if (matchListWord(session.message.text, SWEAR_WORD) > -1){
+    
+    var input = parseText(session.message.text);
+
+    console.log(input);
+    
+    if (matchListWord(input, SWEAR_WORD) > -1){
         session.send(any(SWEAR_RESPONSES));
-    }else if (session.message.text.startsWith("quizz add")){
-        var text = session.message.text.substr("quizz add".length, session.message.text.length);
+    }else if (input.startsWith("quizz add")){
+        var text = input.substr("quizz add".length, input.length);
         var q_and_a = text.split(";");
         QUIZZY.push(new Quizz(q_and_a[0], q_and_a[1]));
         session.send("The question is now added to the Quizz!");
-    }else if (session.message.text === "show quizz"){
+    }else if (input === "show quizz"){
         for (var i = 0; i < QUIZZY.length; ++i){
             session.send(QUIZZY[i].question);
         }
