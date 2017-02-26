@@ -11,7 +11,13 @@ var SWEAR_WORD = [
     "mange merde",
     "connasse",
     "salaud",
-    "petite bite"
+    "petite bite",
+    "abruti",
+    "bite",
+    "pute",
+    "putain",
+    "leche cul",
+    
 ]
 
 var SWEAR_RESPONSES = [
@@ -31,6 +37,38 @@ var SWEAR_RESPONSES = [
     "j'baise ta mère",
     "s'pèce de putain",
     "casse toi pauvre con"
+]
+
+var SALUTATION_WORD = [
+    "salut",
+    "bonjour",
+    "coucou",
+    "yo",
+    "yop"
+]
+
+var RANDOM_PHRASE = [
+    "Plait-il?!",
+    "C'est une menaçe?",
+    "tu veut du pain?",
+    "je sais pas quoi dire...",
+    "Mais... mais... je te permet pas!",
+    "Votre échantillon a été traité ; nous pouvons maintenant procéder aux tests.",
+    "J'attire votre attention sur le champ de particules incandescentes situé devant la sortie.",
+    "Veillez à ne pas sortir cet appareil de la zone de tests.",
+    "Nous apprécions votre diligence !",
+    "Vous vous en sortez bien.",
+    "J'insiste, très beau travail.",
+    "Faites attention.",
+    "Il est inutile d'essayer.",
+    "Le centre d'enrichissement tient à renouveler ses excuses suite au problème occasionné par un environnement de test insoluble.",
+    "Dans le cadre d'un protocole de test facultatif, nous avons ajouté une situation cocasse",
+    "Vous m'écoutez toujours ?",
+    "Vous êtes toujours là ?",
+    "Vous êtes toujours là ?",
+    "Ça suffit, n'y touchez pas.",
+    "N'y- tou-chez- pas.",
+
 ]
 
 var CURRENT_QUESTION = null;
@@ -136,12 +174,13 @@ bot.dialog('/quizz-add', [
 
 bot.dialog('/quizz-start', function(session){
     session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
+    CURRENT_QUESTION = any(QUIZZY);
+    session.beginDialog("/quizz-question");
     //this is here that the magic work for the quizz
 });
 
 bot.dialog('/quizz-question', [
     function(session){
-        CURRENT_QUESTION = any(QUIZZY);
         builder.Prompts.text(session, CURRENT_QUESTION.question);
     },
 
@@ -149,10 +188,18 @@ bot.dialog('/quizz-question', [
         console.log(session);
         console.log(CURRENT_QUESTION);
         console.log(result.response);
-        if (result.response === CURRENT_QUESTION.anwser){
+        parseText
+        if (parseText(result.response) === CURRENT_QUESTION.anwser){
             session.send("Bravo! la réponse était : ")
             session.send(CURRENT_QUESTION.anwser);
             session.endDialog();
         }
     }
 ]);
+
+
+function wait(time){
+    setTimeout(function(){
+        console.log("haha");
+    }, time);
+}
