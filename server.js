@@ -121,6 +121,7 @@ bot.dialog('/quizz-show', function(session){
     for (var i = 0; i < QUIZZY.length; ++i){
         session.send(QUIZZY[i].question);
     }
+    session.endDialog();
 });
 
 bot.dialog('/quizz-add', [
