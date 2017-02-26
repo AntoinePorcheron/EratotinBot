@@ -117,12 +117,12 @@ bot.dialog('/', function (session) {
 });
 
 bot.dialog('/swear', function(session){
-
+    
 });
 
 bot.dialog('/quizz-add', [
     function(session){
-        session.Prompts.text(session, ASK_QUIZZ);
+        builder.Prompts.text(session, ASK_QUIZZ);
     },
     function(session, resulst){
         var tmp = result.response.split(";");
@@ -130,9 +130,18 @@ bot.dialog('/quizz-add', [
         session.send("Merci de votre participation!");
         session.endDialog();
     }
-
-
-
 ]);
 
-bot.dialog('/quizz-start', []);
+bot.dialog('/quizz-start', function(session){
+    
+});
+
+bot.dialog('/quizz-question', [
+    function(session){
+
+    },
+
+    function(session, response){
+
+    }
+]);
