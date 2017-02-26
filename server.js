@@ -108,7 +108,7 @@ bot.dialog('/', function (session) {
     }else if (input === "quizz show"){
         session.beginDialog("/quizz-show");
     }*/
-
+    }
 });
 
 bot.dialog('/swear', function(session){
