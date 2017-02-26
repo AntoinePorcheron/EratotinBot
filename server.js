@@ -172,22 +172,19 @@ bot.dialog('/quizz-add', [
     }
 ]);
 
+
 bot.dialog('/quizz-start', function(session){
     session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
-    for (var i = 0; i < 10; ++i){
-        CURRENT_QUESTION = any(QUIZZY);
-        session.send("Demarrage de la partie dans 5 secondes...");
-        setTimeout(function(){session.beginDialog("/quizz-question")}, 5000);
-    }
-    session.endDialog();
+    CURRENT_QUESTION = any(QUIZZY);
+    session.send("Demarrage de la partie dans 5 secondes...");
+    setTimeout(function(){session.beginDialog("/quizz-question")}, 5000);
 });
-
-           
 
 bot.dialog('/quizz-question', [
     function(session){
         builder.Prompts.text(session, CURRENT_QUESTION.question);
     },
+    
     function(session, result){
         if (parseText(result.response) === CURRENT_QUESTION.anwser){
             session.send("Bravo! la réponse était : ")
@@ -196,6 +193,7 @@ bot.dialog('/quizz-question', [
         }
     }
 ]);
+
 
 bot.dialog('/global', function(session){
     session.send(any(RANDOM_PHRASE));
