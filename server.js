@@ -34,6 +34,7 @@ function rand(a, b){
 }
 
 function matchWord(w, t){
+    console.log(w, t);
     if (w.length == t.length){
         for (var i = 0; i < w.length; ++i){
             if (! (w[i] == t[i].toLowerCase() && w[i] == t[i].toUpperCase())){
