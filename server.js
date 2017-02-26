@@ -73,7 +73,7 @@ function matchListWord(w, l){
 }
 
 function any(array){
-    return array[rand(0, array.length)];
+    return array[rand(0, array.length - 1)];
 }
 
 class Quizz{
