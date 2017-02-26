@@ -199,6 +199,6 @@ bot.dialog('/quizz-question', [
 
 
 bot.dialog('/global', function(session){
-    session.send(any(RANDOM_PHRASE));
+    session.send("/me rigole" /*any(RANDOM_PHRASE)*/);
     session.endDialog();              
 });
