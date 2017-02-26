@@ -184,6 +184,7 @@ bot.dialog('/quizz-start', function(session){
 
 bot.dialog('/quizz-question', [
     function(session){
+        console.log("start");
         builder.Prompts.text(session, CURRENT_QUESTION.question);
     },
     
