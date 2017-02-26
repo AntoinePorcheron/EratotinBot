@@ -30,7 +30,7 @@ var SWEAR_RESPONSES = [
 ]
 
 function rand(a, b){
-    return Math.round((Math.rand() + a) * (b - a));
+    return Math.round((Math.random() + a) * (b - a));
 }
 
 function matchWord(w, t){
