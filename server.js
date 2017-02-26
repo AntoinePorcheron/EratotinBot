@@ -101,23 +101,25 @@ bot.dialog('/', function (session) {
     var input = parseText(session.message.text);
 
     if (matchListWord(input, SWEAR_WORD) > -1){
-        session.send(any(SWEAR_RESPONSES));
-    }else if (input.startsWith("quizz add")){
-        session.beginDialog("/quizz-add");
-        /*var text = input.substr("quizz add".length, input.length);
-        var q_and_a = text.split(";");
-        QUIZZY.push(new Quizz(q_and_a[0], q_and_a[1]));
-        session.send("The question is now added to the Quizz!");*/
-    }else if (input === "show quizz"){
-        for (var i = 0; i < QUIZZY.length; ++i){
-            session.send(QUIZZY[i].question);
-        }
-    }
+        session.beginDialog("/swear");
+    }else if (input.startsWith("quizz"/* add"*/)){
+        session.beginDialog("/" + input.replace(" ", "-"));
+        /*session.beginDialog("/quizz-add");
+    }else if (input === "quizz show"){
+        session.beginDialog("/quizz-show");
+    }*/
 
 });
 
 bot.dialog('/swear', function(session){
-    
+    session.send(any(SWEAR_RESPONSES));
+    session.endDialog();
+});
+
+bot.dialog('/quizz-show', function(session){
+    for (var i = 0; i < QUIZZY.length; ++i){
+        session.send(QUIZZY[i].question);
+    }
 });
 
 bot.dialog('/quizz-add', [
