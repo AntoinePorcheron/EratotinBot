@@ -121,6 +121,54 @@ class Quizz{
     }
 }
 
+class QuizzList{
+    constructor(list){
+        this.quizzes = list;
+        this.current = rand(0, this.quizzes.length - 1);
+    }
+
+    next(){
+        this.current = rand(0, this.quizzes.length - 1);
+    }
+
+    current(){
+        return this.quizzes[this.current]
+    }
+}
+
+class Player(){
+    constructor(name){
+        this.name = name;
+        this.score = 0;
+    }
+}
+
+class BotState{
+    constructor(bot){
+        this.bot = bot;
+    }
+}
+
+class BotStateQuizz extends BotState{
+    constructor(bot){
+        super(bot);
+        this.currentQuestion = any(QUIZZY);
+    }
+
+}
+
+class BotStateDefault extends BotState{
+
+}
+
+class Bot extends builder.UniversalBot{
+    constructor(connector){
+        super(connector);
+        this.state = new BotStateDefault(this);
+    }
+}
+
+
 var QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
 
 var server = restify.createServer();
@@ -132,7 +180,7 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-var bot = new builder.UniversalBot(connector);
+var bot = new /*builder.UniversalBot*/Bot(connector);
 server.post('/api/messages', connector.listen());
 
 
@@ -199,6 +247,6 @@ bot.dialog('/quizz-question', [
 
 
 bot.dialog('/global', function(session){
-    session.send("/me rigole" /*any(RANDOM_PHRASE)*/);
+    session.send(any(RANDOM_PHRASE));
     session.endDialog();              
 });
