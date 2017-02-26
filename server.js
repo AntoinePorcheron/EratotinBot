@@ -176,10 +176,13 @@ bot.dialog('/quizz-start', function(session){
     session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
     for (var i = 0; i < 10; ++i){
         CURRENT_QUESTION = any(QUIZZY);
-        session.beginDialog("/quizz-question");
+        session.send("Demarrage de la partie dans 5 secondes...");
+        setTimeout(function(){session.beginDialog("/quizz-question")}, 5000);
     }
     session.endDialog();
 });
+
+           
 
 bot.dialog('/quizz-question', [
     function(session){
