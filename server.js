@@ -103,6 +103,7 @@ bot.dialog('/', function (session) {
     if (matchListWord(input, SWEAR_WORD) > -1){
         session.beginDialog("/swear");
     }else if (input.startsWith("quizz"/* add"*/)){
+        console.log(input.replace(" ", "-"));
         session.beginDialog("/" + input.replace(" ", "-"));
         /*session.beginDialog("/quizz-add");
     }else if (input === "quizz show"){
