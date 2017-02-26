@@ -33,7 +33,7 @@ var SWEAR_RESPONSES = [
     "casse toi pauvre con"
 ]
 
-var CURRENT_QUESTION;
+var CURRENT_QUESTION = null;
 
 function parseText(text){
     var reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
