@@ -8,7 +8,8 @@ var SWEAR_WORD = [
     "leche mes couilles",
     "mange merde",
     "connasse",
-    "salaud"
+    "salaud",
+    "petite bite"
 ]
 
 var SWEAR_RESPONSES = [
@@ -26,7 +27,8 @@ var SWEAR_RESPONSES = [
     "bachi-bouzouk",
     "micro penis",
     "j'baise ta mère",
-    "s'pèce de putain"
+    "s'pèce de putain",
+    "casse toi pauvre con"
 ]
 
 function parseText(text){
@@ -111,6 +113,6 @@ bot.dialog('/', function (session) {
         for (var i = 0; i < QUIZZY.length; ++i){
             session.send(QUIZZY[i].question);
         }
-    }
+    }else if (input === "salut" 
 
 });
