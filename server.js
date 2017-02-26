@@ -68,7 +68,7 @@ var RANDOM_PHRASE = [
     "Vous êtes toujours là ?",
     "Ça suffit, n'y touchez pas.",
     "N'y- tou-chez- pas.",
-
+    "Effectivement...";
 ]
 
 var CURRENT_QUESTION = null;
@@ -87,7 +87,6 @@ function rand(a, b){
 }
 
 function matchWord(w, t){
-    console.log(w, t);
     if (w.length == t.length){
         for (var i = 0; i < w.length; ++i){
             if ((w[i] != t[i].toLowerCase() && w[i] != t[i].toUpperCase())){
@@ -102,7 +101,6 @@ function matchWord(w, t){
 
 function matchListWord(w, l){
     for (var i = 0; i < l.length; ++i){
-        console.log(l[i]);
         if (matchWord(w, l[i])){
             return i;
         }
@@ -145,6 +143,8 @@ bot.dialog('/', function (session) {
     }else if (input.startsWith("quizz")){
         session.beginDialog("/" + input.replace(" ", "-"));
         //should test if he's allowed to do this...
+    }else{
+        session.beginDialog("/global");
     }
 });
 
@@ -177,7 +177,6 @@ bot.dialog('/quizz-start', function(session){
     for (var i = 0; i < 10; ++i){
         CURRENT_QUESTION = any(QUIZZY);
         session.beginDialog("/quizz-question");
-        console.log("end this one");
     }
     session.endDialog();
     //this is here that the magic work for the quizz
@@ -189,9 +188,6 @@ bot.dialog('/quizz-question', [
     },
 
     function(session, result){
-        console.log(session);
-        console.log(CURRENT_QUESTION);
-        console.log(result.response);
         parseText
         if (parseText(result.response) === CURRENT_QUESTION.anwser){
             session.send("Bravo! la réponse était : ")
@@ -201,9 +197,8 @@ bot.dialog('/quizz-question', [
     }
 ]);
 
-
-function wait(time){
-    setTimeout(function(){
-        console.log("haha");
-    }, time);
-}
+bot.dialog('/global', function(session){
+    session.send(any(RANDOM_PHRASE));
+    session.endDialog();
+                 
+});
