@@ -48,6 +48,7 @@ function matchWord(w, t){
 
 function matchListWord(w, l){
     for (var i = 0; i < l.length; ++i){
+        console.log(l[i]);
         if (matchWord(w, l[i])){
             return i;
         }
