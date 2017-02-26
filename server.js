@@ -174,8 +174,12 @@ bot.dialog('/quizz-add', [
 
 bot.dialog('/quizz-start', function(session){
     session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
-    CURRENT_QUESTION = any(QUIZZY);
-    session.beginDialog("/quizz-question");
+    for (var i = 0; i < 10; ++i){
+        CURRENT_QUESTION = any(QUIZZY);
+        session.beginDialog("/quizz-question");
+        console.log("end this one");
+    }
+    session.endDialog();
     //this is here that the magic work for the quizz
 });
 
