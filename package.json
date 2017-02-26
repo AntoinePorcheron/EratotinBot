@@ -11,5 +11,9 @@
     "url": "https://eratotin@eratotin-bot.scm.azurewebsites.net:443/eratotin-bot.git"
   },
   "author": "eratotin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.7.0",
+    "restify": "^4.3.0"
+  }
 }
