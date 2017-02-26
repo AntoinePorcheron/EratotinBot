@@ -33,6 +33,8 @@ var SWEAR_RESPONSES = [
     "casse toi pauvre con"
 ]
 
+var CURRENT_QUESTION;
+
 function parseText(text){
     var reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
     var replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
@@ -102,13 +104,9 @@ bot.dialog('/', function (session) {
 
     if (matchListWord(input, SWEAR_WORD) > -1){
         session.beginDialog("/swear");
-    }else if (input.startsWith("quizz"/* add"*/)){
-        console.log(input.replace(" ", "-"));
+    }else if (input.startsWith("quizz")){
         session.beginDialog("/" + input.replace(" ", "-"));
-        /*session.beginDialog("/quizz-add");
-    }else if (input === "quizz show"){
-        session.beginDialog("/quizz-show");
-    }*/
+        //should test if he's allowed to do this...
     }
 });
 
@@ -140,12 +138,21 @@ bot.dialog('/quizz-start', function(session){
     
 });
 
+
+
 bot.dialog('/quizz-question', [
     function(session){
-
+        CURRENT_QUESTION = any(QUIZZY);
+        builder.Prompts.text(session, CURRENT_QUESTION.question);
     },
 
-    function(session, response){
+    function(session, result){
+        if (result.response === CURRENT_QUESTION.anwser){
+            //process result
+            session.send("Bravo! la réponse était : ")
+            session.send(CURRENT_QUESTION.anwser);
+            session.endDialog();
+        }
 
     }
 ]);
