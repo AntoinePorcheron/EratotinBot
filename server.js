@@ -109,7 +109,8 @@ function matchListWord(w, l){
 }
 
 function any(array){
-    return array[rand(0, array.length - 1)];
+    var pos = rand(0, array.length - 1);
+    return array[pos];
 }
 
 class Quizz{
