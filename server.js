@@ -124,7 +124,7 @@ bot.dialog('/quizz-add', [
     function(session){
         builder.Prompts.text(session, ASK_QUIZZ);
     },
-    function(session, resulst){
+    function(session, result){
         var tmp = result.response.split(";");
         QUIZZY.push(new Quizz(tmp[0], tmp[1]));
         session.send("Merci de votre participation!");
