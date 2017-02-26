@@ -154,7 +154,7 @@ bot.dialog('/quizz-question', [
             session.send(CURRENT_QUESTION.anwser);
             session.endDialog();
         }else{
-            next();
+            session.next();
         }
 
     }
