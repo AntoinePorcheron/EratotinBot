@@ -153,6 +153,8 @@ bot.dialog('/quizz-question', [
             session.send("Bravo! la réponse était : ")
             session.send(CURRENT_QUESTION.anwser);
             session.endDialog();
+        }else{
+            next();
         }
 
     }
