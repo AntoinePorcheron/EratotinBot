@@ -89,6 +89,14 @@ bot.dialog('/', function (session) {
     console.log(session.message.text);
     if (matchListWord(session.message.text, SWEAR_WORD) > -1){
         session.send(any(SWEAR_RESPONSES));
+    }else if (session.message.text.startWith("quizz add")){
+        var text = session.message.text.substr("quizz add".length, session.message.text.length);
+        var q_and_a = text.split(";");
+        QUIZZY.push(new Quizz(q_and_a[0], q_and_a[1]));
+    }else if (session.message.text === "show quizz"){
+        for (var i = 0; i < QUIZZY.length; ++i){
+            session.send(QUIZZY[i].question);
+        }
     }
 
 });
