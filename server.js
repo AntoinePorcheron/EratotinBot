@@ -68,7 +68,7 @@ var RANDOM_PHRASE = [
     "Vous êtes toujours là ?",
     "Ça suffit, n'y touchez pas.",
     "N'y- tou-chez- pas.",
-    "Effectivement...";
+    "Effectivement..."
 ]
 
 var CURRENT_QUESTION = null;
