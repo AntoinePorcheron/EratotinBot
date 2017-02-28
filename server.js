@@ -161,9 +161,9 @@ class BotStateDefault extends BotState{
         if (matchSentence("quizz start", session)){
             this.bot.state = new BotStateQuizz(this.bot);
         }else if (matchListWord(input, SWEAR_WORD)){
-            bot.beginDialog("/swear");
+            this.bot.beginDialog("/swear");
         }else{
-            bot.beginDialog("/global");
+            this.bot.beginDialog("/global");
         }
     }
 
@@ -173,7 +173,7 @@ class BotStateDefault extends BotState{
 class Bot extends builder.UniversalBot{
     constructor(connector){
         super(connector);
-        this.state = null/*new BotStateDefault(this)*/;
+        this.state = new BotStateDefault(this);
     }
     input(session){
         this.state.input(session);
@@ -193,7 +193,6 @@ let connector = new builder.ChatConnector({
 });
 
 let bot = new /*builder.UniversalBot*/Bot(connector);
-bot.state = new BotStateDefault(bot);
 server.post('/api/messages', connector.listen());
 
 
