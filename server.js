@@ -149,7 +149,7 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-var bot = new builder.UniversalBot();
+var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 var mode = DEFAULT;
