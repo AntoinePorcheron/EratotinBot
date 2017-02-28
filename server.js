@@ -73,11 +73,11 @@ var RANDOM_PHRASE = [
     "Effectivement..."
 ];
 
-var CURRENT_QUESTION = null;
+let CURRENT_QUESTION = null;
 
 function parseText(text){
-    var reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
-    var replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
+    const reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
+    const replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
     if (reg.test(text)){
         text = text.replace(replace_reg, "");
     }
@@ -90,7 +90,7 @@ function rand(a, b){
 
 function matchWord(w, t){
     if (w.length == t.length){
-        for (var i = 0; i < w.length; ++i){
+        for (let i = 0; i < w.length; ++i){
             if ((w[i] != t[i].toLowerCase() && w[i] != t[i].toUpperCase())){
                 return false;
             }
@@ -102,7 +102,7 @@ function matchWord(w, t){
 }
 
 function matchListWord(w, l){
-    for (var i = 0; i < l.length; ++i){
+    for (let i = 0; i < l.length; ++i){
         if (matchWord(w, l[i])){
             return i;
         }
@@ -114,7 +114,7 @@ function matchSentence(s1, s2){
     s1 = s1.trim().split(" ");
     s2 = s2.trim().split(" ");
     if (s1.length == s2.length){
-        for (var i = 0; i < s1.length; ++i){
+        for (let i = 0; i < s1.length; ++i){
             if (!matchWord(s1[i], s2[i])){
                 return false;
             }
@@ -126,9 +126,7 @@ function matchSentence(s1, s2){
 }
 
 function any(array){
-    var pos = rand(0, array.length - 1);
-    console.log(pos);
-    return array[pos];
+    return array[rand(0, array.length - 1)];
 }
 
 class Quizz{
@@ -138,26 +136,27 @@ class Quizz{
     }
 }
 
-var QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
-var server = restify.createServer();
+let QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
+let server = restify.createServer();
 
 server.listen(process.env.port || process.env.PORT || 8080, function () {
     console.log("listening on port 8080");
 });
-var connector = new builder.ChatConnector({
+
+let connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-var bot = new builder.UniversalBot(connector);
+let bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
-var mode = DEFAULT;
+let mode = DEFAULT;
 
 bot.dialog('/', function (session) {
 
     if (mode == DEFAULT) {
-        var input = parseText(session.message.text);
+        let input = parseText(session.message.text);
         if (matchListWord(input, SWEAR_WORD) > -1) {
             session.beginDialog("/swear");
         } else if (input.startsWith("quizz")) {
@@ -177,7 +176,7 @@ bot.dialog('/swear', function(session){
 });
 
 bot.dialog('/quizz-show', function(session){
-    for (var i = 0; i < QUIZZY.length; ++i){
+    for (let i = 0; i < QUIZZY.length; ++i){
         session.send(QUIZZY[i].question);
     }
     session.endDialog();
@@ -188,7 +187,7 @@ bot.dialog('/quizz-add', [
         builder.Prompts.text(session, ASK_QUIZZ);
     },
     function(session, result){
-        var tmp = result.response.split(";");
+        let tmp = result.response.split(";");
         QUIZZY.push(new Quizz(tmp[0], tmp[1]));
         session.send("Merci de votre participation!");
         session.endDialog();
@@ -220,7 +219,6 @@ bot.dialog('/quizz-question', [
         }
     }
 ]);
-
 
 bot.dialog('/global', function(session){
     session.send(any(RANDOM_PHRASE));
