@@ -162,7 +162,11 @@ bot.dialog('/', function (session) {
         } else if (input.startsWith("quizz")) {
             session.beginDialog("/" + input.replace(" ", "-"));
             //should test if he's allowed to do this...
-        } else {
+        } else if (input.startsWith("test")) {
+            session.beginDialog("/test");
+        }else if (input.startsWith("end")) {
+            session.beginDialog("/end");
+        }else{
             session.beginDialog("/global");
         }
     }else if (mode == QUIZZ){
@@ -223,4 +227,21 @@ bot.dialog('/quizz-question', [
 bot.dialog('/global', function(session){
     session.send(any(RANDOM_PHRASE));
     session.endDialog();              
+});
+
+let CALLBACK = [];
+bot.dialog('/test', function(session){
+    session.send("Ceci est une zone de test. Veuillez rebroussé chemin s'il vous plait....");
+    function callbackFunction(){
+        console.log("It seem to be working... great!");
+        session.endDialog();
+    }
+    CALLBACK.push(callbackFunction);
+});
+
+bot.dialog('/end', function(session){
+    for (let i = 0; i < CALLBACK.length; ++i){
+        CALLBACK[i]();
+    }
+    CALLBACK = [];
 });
