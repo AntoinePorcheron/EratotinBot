@@ -5,6 +5,10 @@
 // - imagine new game
 // - a memory system (db, or file maybe?)
 
+
+const DEFAULT = 0;
+const QUIZZ = 1;
+
 let restify = require('restify');
 let builder = require('botbuilder');
 
@@ -135,86 +139,34 @@ class Quizz{
     }
 }
 
-class BotState{
-    constructor(b){
-        this.bot = b;
-    }
-}
-
-class BotStateQuizz extends BotState{
-    constructor(bot){
-        super(bot);
-        this.currentQuestion = any(QUIZZY);
-    }
-
-    input(session){
-    }
-
-}
-
-class BotStateDefault extends BotState{
-    constructor(bot){
-        super(bot);
-    }
-
-    input(session){
-        console.log("during input");
-        let input = parseText(session.message.text);
-        if (matchSentence("quizz start", input)){
-            this.bot.state = new BotStateQuizz(this.bot);
-        }else if (matchListWord(input, SWEAR_WORD)){
-            this.bot.beginDialog("/swear");
-        }else{
-            /*this.bot.beginDialog("/global");*/
-            console.log("before sending");
-            session.send(any(RANDOM_PHRASE));
-            console.log("after sending");
-        }
-    }
-
-    
-}
-
-class Bot extends builder.UniversalBot{
-    constructor(connector){
-        super(connector);
-        this.state = new BotStateDefault(this);
-    }
-    input(session){
-        this.state.input(session);
-    }
-}
-
-
 let QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
-
 let server = restify.createServer();
-
 server.listen(process.env.port || process.env.PORT || 80, function () {});
-  
 let connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-let bot = new /*builder.UniversalBot*/Bot(connector);
+let bot = new builder.UniversalBot();
 server.post('/api/messages', connector.listen());
 
+let mode = DEFAULT;
 
 bot.dialog('/', function (session) {
-    
-    /*let input = parseText(session.message.text);*/
-    console.log("test before input");
-    bot.input(session)
 
-    /*if (matchListWord(input, SWEAR_WORD) > -1){
-        session.beginDialog("/swear");
-    }else if (input.startsWith("quizz")){
-        session.beginDialog("/" + input.replace(" ", "-"));
-        //should test if he's allowed to do this...
-    }else{
-        session.beginDialog("/global");
-    }*/
+    if (mode == DEFAULT) {
+        let input = parseText(session.message.text);
+        if (matchListWord(input, SWEAR_WORD) > -1) {
+            session.beginDialog("/swear");
+        } else if (input.startsWith("quizz")) {
+            session.beginDialog("/" + input.replace(" ", "-"));
+            //should test if he's allowed to do this...
+        } else {
+            session.beginDialog("/global");
+        }
+    }else if (mode == QUIZZ){
+
+    }
 });
 
 bot.dialog('/swear', function(session){
@@ -246,7 +198,10 @@ bot.dialog('/quizz-start', function(session){
     session.send("Attention mesdames et messieurs, nous voila parti pour une folle session de 10 question! À vos jeux!");
     CURRENT_QUESTION = any(QUIZZY);
     session.send("Demarrage de la partie dans 5 secondes...");
-    setTimeout(function(){session.beginDialog("/quizz-question")}, 5000);
+    setTimeout(function(){
+        mode = QUIZZ;
+        session.endDialog()
+    }, 5000);
 });
 
 bot.dialog('/quizz-question', [
