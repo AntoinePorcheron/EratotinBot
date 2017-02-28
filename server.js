@@ -234,6 +234,7 @@ bot.dialog('/test', function(session){
     session.send("Ceci est une zone de test. Veuillez rebroussé chemin s'il vous plait....");
     function callbackFunction(){
         console.log("It seem to be working... great!");
+        session.send("With great power come great responsibility");
         session.endDialog();
     }
     CALLBACK.push(callbackFunction);
