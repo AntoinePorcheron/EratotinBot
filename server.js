@@ -27,8 +27,7 @@ var SWEAR_WORD = [
     "bite",
     "pute",
     "putain",
-    "leche cul",
-
+    "leche cul"
 ];
 
 var SWEAR_RESPONSES = [
@@ -141,7 +140,10 @@ class Quizz{
 
 var QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
 var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 80, function () {});
+
+server.listen(process.env.port || process.env.PORT || 8080, function () {
+    console.log("listening on port 8080");
+});
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
