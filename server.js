@@ -1,9 +1,16 @@
-var restify = require('restify');
-var builder = require('botbuilder');
+//What to do :
+// - change method 'input' parameters. It should take the whole message, to be able to respond directly
+// - create a swear generator
+// - create a swear understander
+// - imagine new game
+// - a memory system (db, or file maybe?)
 
-var ASK_QUIZZ = "Ecrivez la question, suivi de la réponse, séparé par un point virgule. Example : question;réponse";
+let restify = require('restify');
+let builder = require('botbuilder');
 
-var SWEAR_WORD = [
+const ASK_QUIZZ = "Ecrivez la question, suivi de la réponse, séparé par un point virgule. Example : question;réponse";
+
+const SWEAR_WORD = [
     "connard",
     "fils de pute",
     "salope",
@@ -17,10 +24,10 @@ var SWEAR_WORD = [
     "pute",
     "putain",
     "leche cul",
-    
-]
 
-var SWEAR_RESPONSES = [
+];
+
+const SWEAR_RESPONSES = [
     "espèce de raclure de bidet",
     "p'tite bite",
     "sac à foutre",
@@ -37,17 +44,9 @@ var SWEAR_RESPONSES = [
     "j'baise ta mère",
     "s'pèce de putain",
     "casse toi pauvre con"
-]
+];
 
-var SALUTATION_WORD = [
-    "salut",
-    "bonjour",
-    "coucou",
-    "yo",
-    "yop"
-]
-
-var RANDOM_PHRASE = [
+const RANDOM_PHRASE = [
     "Plait-il?!",
     "C'est une menaçe?",
     "tu veut du pain?",
@@ -69,14 +68,14 @@ var RANDOM_PHRASE = [
     "Ça suffit, n'y touchez pas.",
     "N'y- tou-chez- pas.",
     "Effectivement..."
-]
+];
 
-var CURRENT_QUESTION = null;
+let CURRENT_QUESTION = null;
 
 function parseText(text){
-    var reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
-    var replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
-    if ( reg.test(text)){
+    const reg = new RegExp(/<[^/]+>.+<\/.+>.*/);
+    const replace_reg = new RegExp(/<[^/]+>.+<\/.+>/);
+    if (reg.test(text)){
         text = text.replace(replace_reg, "");
     }
     return text.trim();
@@ -88,7 +87,7 @@ function rand(a, b){
 
 function matchWord(w, t){
     if (w.length == t.length){
-        for (var i = 0; i < w.length; ++i){
+        for (let i = 0; i < w.length; ++i){
             if ((w[i] != t[i].toLowerCase() && w[i] != t[i].toUpperCase())){
                 return false;
             }
@@ -100,7 +99,7 @@ function matchWord(w, t){
 }
 
 function matchListWord(w, l){
-    for (var i = 0; i < l.length; ++i){
+    for (let i = 0; i < l.length; ++i){
         if (matchWord(w, l[i])){
             return i;
         }
@@ -108,8 +107,23 @@ function matchListWord(w, l){
     return -1;
 }
 
+function matchSentence(s1, s2){
+    s1 = s1.trim().split(" ");
+    s2 = s2.trim().split(" ");
+    if (s1.length == s2.length){
+        for (let i = 0; i < s1.length; ++i){
+            if (!matchWord(s1[i], s2[i])){
+                return false;
+            }
+        }
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function any(array){
-    var pos = rand(0, array.length - 1);
+    const pos = rand(0, array.length - 1);
     console.log(pos);
     return array[pos];
 }
@@ -121,30 +135,8 @@ class Quizz{
     }
 }
 
-class QuizzList{
-    constructor(list){
-        this.quizzes = list;
-        this.current = rand(0, this.quizzes.length - 1);
-    }
-
-    next(){
-        this.current = rand(0, this.quizzes.length - 1);
-    }
-
-    current(){
-        return this.quizzes[this.current]
-    }
-}
-
-class Player{
-    constructor(name){
-        this.name = name;
-        this.score = 0;
-    }
-}
-
 class BotState{
-    constructor(bot){
+    constructor(b){
         this.bot = bot;
     }
 }
@@ -155,10 +147,27 @@ class BotStateQuizz extends BotState{
         this.currentQuestion = any(QUIZZY);
     }
 
+    input(session){
+    }
+
 }
 
 class BotStateDefault extends BotState{
+    constructor(bot){
+        super(bot);
+    }
 
+    input(session){
+        if (matchSentence("quizz start", session)){
+            this.bot.state = new BotStateQuizz(this.bot);
+        }else if (matchListWord(input, SWEAR_WORD)){
+            bot.beginDialog("/swear");
+        }else{
+            bot.beginDialog("/global");
+        }
+    }
+
+    
 }
 
 class Bot extends builder.UniversalBot{
@@ -166,36 +175,41 @@ class Bot extends builder.UniversalBot{
         super(connector);
         this.state = new BotStateDefault(this);
     }
+    input(session){
+        this.state.input(session);
+    }
 }
 
 
-var QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
+let QUIZZY = [new Quizz("qu'est-ce qui est plus chaud que le mont vesuve?", "ta mère!")];
 
-var server = restify.createServer();
+let server = restify.createServer();
 
 server.listen(process.env.port || process.env.PORT || 80, function () {});
   
-var connector = new builder.ChatConnector({
+let connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-var bot = new /*builder.UniversalBot*/Bot(connector);
+let bot = new /*builder.UniversalBot*/Bot(connector);
 server.post('/api/messages', connector.listen());
 
 
 bot.dialog('/', function (session) {
     
-    var input = parseText(session.message.text);
+    /*let input = parseText(session.message.text);*/
 
-    if (matchListWord(input, SWEAR_WORD) > -1){
+    bot.input(session)
+
+    /*if (matchListWord(input, SWEAR_WORD) > -1){
         session.beginDialog("/swear");
     }else if (input.startsWith("quizz")){
         session.beginDialog("/" + input.replace(" ", "-"));
         //should test if he's allowed to do this...
     }else{
         session.beginDialog("/global");
-    }
+    }*/
 });
 
 bot.dialog('/swear', function(session){
@@ -204,7 +218,7 @@ bot.dialog('/swear', function(session){
 });
 
 bot.dialog('/quizz-show', function(session){
-    for (var i = 0; i < QUIZZY.length; ++i){
+    for (let i = 0; i < QUIZZY.length; ++i){
         session.send(QUIZZY[i].question);
     }
     session.endDialog();
@@ -215,7 +229,7 @@ bot.dialog('/quizz-add', [
         builder.Prompts.text(session, ASK_QUIZZ);
     },
     function(session, result){
-        var tmp = result.response.split(";");
+        let tmp = result.response.split(";");
         QUIZZY.push(new Quizz(tmp[0], tmp[1]));
         session.send("Merci de votre participation!");
         session.endDialog();
@@ -238,7 +252,7 @@ bot.dialog('/quizz-question', [
     
     function(session, result){
         if (parseText(result.response) === CURRENT_QUESTION.anwser){
-            session.send("Bravo! la réponse était : ")
+            session.send("Bravo! la réponse était : ");
             session.send(CURRENT_QUESTION.anwser);
             session.endDialog(); 
         }
