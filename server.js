@@ -164,7 +164,8 @@ class BotStateDefault extends BotState{
         }else if (matchListWord(input, SWEAR_WORD)){
             this.bot.beginDialog("/swear");
         }else{
-            this.bot.beginDialog("/global");
+            /*this.bot.beginDialog("/global");*/
+            session.send(any(RANDOM_PHRASE));
         }
     }
 
