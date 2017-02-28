@@ -237,6 +237,7 @@ bot.dialog('/test', function(session){
         session.send("With great power come great responsibility");
         session.endDialog();
     }
+    console.log("just add a callback");
     CALLBACK.push(callbackFunction);
 });
 
