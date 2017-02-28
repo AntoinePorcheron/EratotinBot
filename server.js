@@ -158,6 +158,7 @@ class BotStateDefault extends BotState{
     }
 
     input(session){
+        console.log("during input");
         let input = parseText(session.message.text);
         if (matchSentence("quizz start", input)){
             this.bot.state = new BotStateQuizz(this.bot);
@@ -165,7 +166,9 @@ class BotStateDefault extends BotState{
             this.bot.beginDialog("/swear");
         }else{
             /*this.bot.beginDialog("/global");*/
+            console.log("before sending");
             session.send(any(RANDOM_PHRASE));
+            console.log("after sending");
         }
     }
 
@@ -201,7 +204,7 @@ server.post('/api/messages', connector.listen());
 bot.dialog('/', function (session) {
     
     /*let input = parseText(session.message.text);*/
-
+    console.log("test before input");
     bot.input(session)
 
     /*if (matchListWord(input, SWEAR_WORD) > -1){
