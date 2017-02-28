@@ -158,7 +158,8 @@ class BotStateDefault extends BotState{
     }
 
     input(session){
-        if (matchSentence("quizz start", session)){
+        let input = parseText(session.message.text);
+        if (matchSentence("quizz start", input)){
             this.bot.state = new BotStateQuizz(this.bot);
         }else if (matchListWord(input, SWEAR_WORD)){
             this.bot.beginDialog("/swear");
