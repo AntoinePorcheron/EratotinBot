@@ -137,7 +137,7 @@ class Quizz{
 
 class BotState{
     constructor(b){
-        this.bot = bot;
+        this.bot = b;
     }
 }
 
