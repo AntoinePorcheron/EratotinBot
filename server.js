@@ -173,7 +173,7 @@ class BotStateDefault extends BotState{
 class Bot extends builder.UniversalBot{
     constructor(connector){
         super(connector);
-        this.state = new BotStateDefault(this);
+        this.state = null/*new BotStateDefault(this)*/;
     }
     input(session){
         this.state.input(session);
@@ -193,6 +193,7 @@ let connector = new builder.ChatConnector({
 });
 
 let bot = new /*builder.UniversalBot*/Bot(connector);
+bot.state = new BotStateDefault(bot);
 server.post('/api/messages', connector.listen());
 
 
